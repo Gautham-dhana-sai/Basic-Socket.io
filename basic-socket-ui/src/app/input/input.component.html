@@ -1,0 +1,7 @@
+<div [formGroup]="form">
+    <input type="text" class="socket big" placeholder="Type here" formControlName="message" (onChange)="pullValue()">
+    <button type="submit" (click)="onSubmit()">ADD</button>
+</div>
+<div *ngFor="let item of list">
+    <p class="white center">{{item}}</p>
+</div>
