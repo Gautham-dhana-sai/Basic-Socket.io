@@ -29,8 +29,6 @@ export class InputComponent implements OnInit {
     });
   }
 
-  ngOnChanges() {}
-
   pullValue(): Observable<any> {
     return new Observable<any>((observer) => {
       this.socket.on('msg', (payload) => {
