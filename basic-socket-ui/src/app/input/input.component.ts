@@ -14,6 +14,9 @@ export class InputComponent implements OnInit {
   message: string = '';
   list: any = [];
   form: FormGroup;
+  user: string = ''
+  username: string = ''
+
   private socket: Socket;
 
   constructor() {
@@ -25,14 +28,17 @@ export class InputComponent implements OnInit {
 
   ngOnInit(): void {
     this.pullValue().subscribe((payload) => {
-      this.list = [...this.list, payload.message];
+      console.log(payload)
+      this.list = payload;
     });
   }
 
   pullValue(): Observable<any> {
     return new Observable<any>((observer) => {
-      this.socket.on('msg', (payload) => {
-        observer.next(payload);
+      this.socket.on('msg', (payload: any) => {
+        this.list.push(payload)
+        observer.next(this.list);
+        console.log(payload, this.list)
       });
       return () => this.socket.disconnect();
     });
@@ -40,7 +46,12 @@ export class InputComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form.value.message, this.list);
-    this.socket.emit('msg', { message: this.form.value.message });
+    this.socket.emit('msg', { message: this.form.value.message, sent: this.user });
     this.form.reset();
+  }
+
+  selectUser(){
+    this.user = this.username
+    this.username = ''
   }
 }
